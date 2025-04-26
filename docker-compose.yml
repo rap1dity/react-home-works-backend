@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:17.2-alpine
+    container_name: react-homeworks-postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    networks:
+      - react-homeworks
+    volumes:
+      - react-homeworks-db:/var/lib/postgresql/data
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:5432
+
+  redis:
+    container_name: react-homeworks-redis
+    image: redis:7-alpine
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    volumes:
+      - react-homeworks-redisdata:/data
+    restart: unless-stopped
+    networks:
+      - react-homeworks
+
+volumes:
+  react-homeworks-db:
+  react-homeworks-redisdata:
+
+networks:
+  react-homeworks:
+    driver: bridge
