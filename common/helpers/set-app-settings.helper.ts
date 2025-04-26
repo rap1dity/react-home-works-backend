@@ -29,6 +29,10 @@ export const setAppSettings = async (
 
   app.enableShutdownHooks();
 
+  app.enableCors({
+    origin: '*',
+  });
+
   return app;
 };
 
